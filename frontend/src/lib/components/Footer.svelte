@@ -23,7 +23,7 @@
   </div>
 
   <div class="credits">
-    © 2025 Team: Manzana, Michael, Jesús, André, Josué, Kimberly
+    © 2025 Team: Paloma, Michael, Jesús, André, Josué, Kimberly
   </div>
 </footer>
 

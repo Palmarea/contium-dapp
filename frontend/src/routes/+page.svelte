@@ -1,65 +1,68 @@
 <script>
-  // Importamos tu componente nuevo
-  import PrivacyModal from '$lib/components/PrivacyModal.svelte';
-  
-  // Importamos la navegación de SvelteKit
-  import { goto } from '$app/navigation';
-
-  let showModal = false;
-
-  function abrirModal() {
-    showModal = true;
-  }
-
-  function irAlaApp() {
-    showModal = false;
-    console.log("El usuario aceptó. Redirigiendo...");
-    // Intentará ir a /app. Dará error 404 por ahora (¡eso es lo esperado!)
-    goto('/app'); 
-  }
+  import JourneySection from '$lib/components/JourneySection.svelte';
+  import Footer from '$lib/components/Footer.svelte';
 </script>
 
-<main class="contenedor-provisional">
-  <h1>Bienvenido a Contium</h1>
-  <p>Esta es tu Landing Page (Borrador)</p>
+<!-- HERO SECTION -->
+<section class="hero">
+  <h1>Verifica documentos en blockchain</h1>
+  <p>Registra, valida y certifica tus documentos con NFTs en zkSYS</p>
+  <a href="/app" class="cta-button">Launch App</a>
+</section>
 
-  <button class="btn-lanzar" on:click={abrirModal}>
-    🚀 Launch App
-  </button>
+<!-- JOURNEY SECTION (el componente que creaste) -->
+<JourneySection />
 
-  <PrivacyModal 
-    isOpen={showModal} 
-    onAccept={irAlaApp}
-    onCancel={() => showModal = false}
-  />
-</main>
+<!-- FOOTER -->
+<Footer />
 
 <style>
-  .contenedor-provisional {
-    height: 100vh;
+  .hero {
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    background-color: #f4f4f4;
-    font-family: sans-serif;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
   }
 
-  h1 { margin-bottom: 10px; color: #333; }
-
-  .btn-lanzar {
-    background-color: #000;
-    color: #fff;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: transform 0.2s;
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 16px;
   }
-  
-  .btn-lanzar:hover {
-    transform: scale(1.05);
+
+  .hero p {
+    font-size: 1.3rem;
+    margin-bottom: 32px;
+    opacity: 0.9;
+  }
+
+  .cta-button {
+    background: white;
+    color: #667eea;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2rem;
+    }
+    .hero p {
+      font-size: 1rem;
+    }
   }
 </style>
