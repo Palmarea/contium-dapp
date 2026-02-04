@@ -5,13 +5,11 @@
 
 <footer class="footer">
   <div class="grid">
-    <!-- Columna 1 -->
     <div class="col">
       <img src="/logo.png" alt="Contium Logo" class="logo" />
       <p>Verificación Documental</p>
     </div>
 
-    <!-- Columna 2 -->
     <div class="col">
       <h4>Links</h4>
       <a href={explorerUrl} target="_blank">Explorer</a>
@@ -19,7 +17,6 @@
       <a href="/docs">Docs</a>
     </div>
 
-    <!-- Columna 3 -->
     <div class="col">
       <p>Built for zkSYS Proof-of-Builders Hackathon 2025</p>
     </div>
@@ -70,6 +67,7 @@
     padding-top: 1rem;
   }
 
+  /* Responsive */
   @media (max-width: 768px) {
     .grid {
       grid-template-columns: 1fr;
