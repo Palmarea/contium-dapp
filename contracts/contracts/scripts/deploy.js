@@ -1,55 +1,65 @@
-const hre = require("hardhat");
-const fs = require("fs");
-const path = require("path");
+import hre from "hardhat";
+import fs from "node:fs";
+
+const EXPLORER = "https://explorer-pob.dev11.top";
+
+function explorerTx(hash) {
+  return `${EXPLORER}/tx/${hash}`;
+}
+function explorerAddr(addr) {
+  return `${EXPLORER}/address/${addr}`;
+}
 
 async function main() {
-  // Este debe existir si el plugin está cargado correctamente
   if (!hre.ethers) {
     throw new Error(
-      "hre.ethers es undefined. Verifica que instalaste @nomicfoundation/hardhat-ethers en /contracts y que hardhat.config.js lo requiere."
+      "Hardhat ethers plugin no está cargado. Revisa hardhat.config.js y que @nomicfoundation/hardhat-ethers esté instalado en contium-dapp/contracts."
     );
   }
 
-  const { ethers } = hre;
+  const ethers = hre.ethers;
 
   const [deployer] = await ethers.getSigners();
   console.log("Deployer:", deployer.address);
 
   const net = await ethers.provider.getNetwork();
-  console.log("Network chainId:", net.chainId.toString());
+  console.log("ChainId:", net.chainId.toString());
 
-  // 1) Deploy DocumentRegistry
   const DocumentRegistry = await ethers.getContractFactory("DocumentRegistry");
   const registry = await DocumentRegistry.deploy();
   await registry.waitForDeployment();
 
   const registryAddress = await registry.getAddress();
-  console.log("✅ DocumentRegistry:", registryAddress);
-  console.log("Explorer:", `https://explorer-pob.dev11.top/address/${registryAddress}`);
+  const regTx = registry.deploymentTransaction();
 
-  // 2) Deploy ContiumBadge con address del registry
+  console.log("✅ DocumentRegistry:", registryAddress);
+  if (regTx) console.log("TX:", regTx.hash, explorerTx(regTx.hash));
+  console.log("Explorer:", explorerAddr(registryAddress));
+
   const ContiumBadge = await ethers.getContractFactory("ContiumBadge");
   const badge = await ContiumBadge.deploy(registryAddress);
   await badge.waitForDeployment();
 
   const badgeAddress = await badge.getAddress();
-  console.log("✅ ContiumBadge:", badgeAddress);
-  console.log("Explorer:", `https://explorer-pob.dev11.top/address/${badgeAddress}`);
+  const badgeTx = badge.deploymentTransaction();
 
-  // 3) Guardar deployments.json en /contracts
+  console.log("✅ ContiumBadge:", badgeAddress);
+  if (badgeTx) console.log("TX:", badgeTx.hash, explorerTx(badgeTx.hash));
+  console.log("Explorer:", explorerAddr(badgeAddress));
+
   const out = {
     network: "zksys",
     chainId: Number(net.chainId),
-    DocumentRegistry: registryAddress,
-    ContiumBadge: badgeAddress,
-    explorerBase: "https://explorer-pob.dev11.top",
+    rpc: process.env.ZKSYS_RPC_URL || "https://rpc-pob.dev11.top",
+    explorerBase: EXPLORER,
     token: "TSYS",
     deployer: deployer.address,
+    DocumentRegistry: registryAddress,
+    ContiumBadge: badgeAddress,
   };
 
-  const outPath = path.resolve(process.cwd(), "deployments.json");
-  fs.writeFileSync(outPath, JSON.stringify(out, null, 2), "utf-8");
-  console.log("✅ deployments.json actualizado:", outPath);
+  fs.writeFileSync("deployments.json", JSON.stringify(out, null, 2), "utf-8");
+  console.log("✅ deployments.json actualizado en:", process.cwd());
 }
 
 main().catch((e) => {

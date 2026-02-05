@@ -1,18 +1,20 @@
-require("@nomicfoundation/hardhat-ethers");
-require("dotenv").config();
+import "dotenv/config";
+import "@nomicfoundation/hardhat-ethers";
+import { defineConfig } from "hardhat/config";
 
-/** @type {import("hardhat/config").HardhatUserConfig} */
-module.exports = {
-  solidity: "0.8.28",
+function normalizePk(pk) {
+  if (!pk) return "";
+  return pk.startsWith("0x") ? pk : `0x${pk}`;
+}
+
+export default defineConfig({
+  solidity: "0.8.28", // ✅ debe coincidir con el pragma de tus .sol
   networks: {
     zksys: {
       type: "http",
-      url: "https://rpc-pob.dev11.top",
+      url: process.env.ZKSYS_RPC_URL || "https://rpc-pob.dev11.top",
       chainId: 57042,
-      // acepta PRIVATE_KEY con o sin 0x
-      accounts: process.env.PRIVATE_KEY
-        ? [process.env.PRIVATE_KEY.startsWith("0x") ? process.env.PRIVATE_KEY : "0x" + process.env.PRIVATE_KEY]
-        : [],
+      accounts: [normalizePk(process.env.PRIVATE_KEY)],
     },
   },
-};
+});
