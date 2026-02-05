@@ -25,6 +25,7 @@
     "typescript": "~5.8.0"
   },
   "dependencies": {
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.2",
     "@openzeppelin/contracts": "^4.9.6"
   }
 }
