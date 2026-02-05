@@ -1,238 +1,190 @@
 <script>
   import { onMount } from 'svelte';
-  
-  let journeySteps = [
-    { icon: '📤', title: 'UPLOAD', description: 'Sube tu documento (PDF, DOC, imagen)' },
-    { icon: '🔐', title: 'HASH', description: 'Generamos huella digital SHA-256' },
-    { icon: '⛓️', title: 'REGISTRO', description: 'Guardamos el hash en blockchain zkSYS' },
-    { icon: '✅', title: 'VALIDACIÓN', description: 'Verificamos y certificamos el documento' },
-    { icon: '🏆', title: 'BADGE NFT', description: 'Recibe tu NFT de cumplimiento' }
+
+  const steps = [
+    {
+      icon: '📤',
+      title: 'UPLOAD',
+      text: 'Sube tu documento (PDF, DOC, imagen)'
+    },
+    {
+      icon: '🔐',
+      title: 'HASH',
+      text: 'Generamos huella digital SHA-256'
+    },
+    {
+      icon: '⛓️',
+      title: 'REGISTRO',
+      text: 'Guardamos hash en blockchain zkSYS'
+    },
+    {
+      icon: '✅',
+      title: 'VALIDACIÓN',
+      text: 'Verificamos y certificamos'
+    },
+    {
+      icon: '🏆',
+      title: 'BADGE NFT',
+      text: 'Recibe tu NFT de cumplimiento'
+    }
   ];
 
-  let visibleSteps = [];
+  let items = [];
 
   onMount(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const index = parseInt(entry.target.dataset.index);
-            if (!visibleSteps.includes(index)) {
-              visibleSteps = [...visibleSteps, index];
-            }
+            entry.target.classList.add('visible');
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.15 }
     );
 
-    document.querySelectorAll('.journey-step').forEach((step) => {
-      observer.observe(step);
-    });
-
-    return () => observer.disconnect();
+    items.forEach((el) => observer.observe(el));
   });
 </script>
 
-<section class="journey-section">
-  <div class="journey-header">
+<section class="journey">
+  <div class="container">
     <h2>¿CÓMO FUNCIONA?</h2>
-    <p>Tu documento verificado en 5 simples pasos</p>
-  </div>
+    <p class="subtitle">Tu documento verificado en 5 pasos</p>
 
-  <div class="journey-container">
-    <div class="journey-line"></div>
-    
-    {#each journeySteps as step, index}
-      <div 
-        class="journey-step" 
-        class:visible={visibleSteps.includes(index)}
-        data-index={index}
-        style="--delay: {index * 0.15}s"
-      >
-        <div class="step-number">{index + 1}</div>
-        <div class="step-icon">{step.icon}</div>
-        <div class="step-content">
-          <h3>{step.title}</h3>
-          <p>{step.description}</p>
+    <div class="timeline">
+      {#each steps as step, i}
+        <div
+          class="timeline-item"
+          bind:this={items[i]}
+          style="transition-delay: {i * 120}ms"
+        >
+          <div class="dot"></div>
+
+          <div class="card">
+            <span class="icon">{step.icon}</span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </div>
         </div>
-      </div>
-    {/each}
+      {/each}
+    </div>
   </div>
 </section>
 
 <style>
-  /* Paleta de Colores y Tipografía */
-  :root {
-    --primary: #1a73e8;
-    --secondary: #34a853;
-    --bg-gray: #f8f9fa;
-    --text-dark: #202124;
-    --text-light: #70757a; /* Color más claro para descripciones */
-    --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    --shadow-hover: 0 15px 35px rgba(26, 115, 232, 0.15);
+  /* SECTION */
+  .journey {
+    background: #f8f9fa;
+    padding: 6rem 1rem;
   }
 
-  .journey-section {
-    padding: 100px 20px;
-    background: var(--bg-gray);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  }
-
-  .journey-header {
-    text-align: center;
-    margin-bottom: 80px;
-  }
-
-  .journey-header h2 {
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 16px;
-    letter-spacing: -1px;
-  }
-
-  .journey-header p {
-    font-size: 1.1rem;
-    color: var(--text-light);
-    font-weight: 400;
-  }
-
-  .journey-container {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    max-width: 500px;
+  .container {
+    max-width: 960px;
     margin: 0 auto;
-    position: relative;
   }
 
-  /* Línea conectora vertical (Móvil) */
-  .journey-line {
+  h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #555;
+    margin-bottom: 4rem;
+    font-size: 1.05rem;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    margin-left: 1.5rem;
+  }
+
+  .timeline::before {
+    content: '';
     position: absolute;
-    left: 20px;
-    top: 40px;
-    bottom: 40px;
-    width: 3px;
-    background: linear-gradient(to bottom, var(--primary), var(--secondary));
-    border-radius: 4px;
-    opacity: 0.4;
+    top: 0;
+    left: 12px;
+    width: 2px;
+    height: 100%;
+    background: #dcdfe3;
   }
 
-  .journey-step {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 30px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
+  /* ITEM */
+  .timeline-item {
     position: relative;
-    margin-left: 45px;
-    
-    /* Animación */
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: var(--delay);
+    transform: translateY(30px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
   }
 
-  .journey-step.visible {
+  .timeline-item.visible {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .journey-step:hover {
-    box-shadow: var(--shadow-hover);
-    transform: scale(1.02) translateY(-4px);
-    border: 1px solid rgba(26, 115, 232, 0.2);
-  }
-
-  .step-number {
-    position: absolute;
-    left: -55px;
-    width: 36px;
-    height: 36px;
-    background: white;
-    color: var(--primary);
-    border: 3px solid var(--primary);
+  .dot {
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 0.9rem;
+    background: #1a73e8;
+    flex-shrink: 0;
+    margin-top: 0.6rem;
+    box-shadow: 0 0 0 6px #f8f9fa;
     z-index: 2;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
-  .step-icon {
-    font-size: 2.8rem;
-    line-height: 1;
-    transition: transform 0.3s ease;
+  /* CARD */
+  .card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1.4rem 1.6rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    max-width: 520px;
   }
 
-  .journey-step:hover .step-icon {
-    transform: rotate(-10deg) scale(1.1);
+  .icon {
+    font-size: 1.6rem;
+    display: inline-block;
+    margin-bottom: 0.4rem;
   }
 
-  .step-content h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin: 0 0 6px 0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .step-content p {
+  h3 {
     font-size: 0.95rem;
-    color: var(--text-light);
-    line-height: 1.5;
-    margin: 0;
+    letter-spacing: 0.08em;
+    color: #1a73e8;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
   }
 
-  /* Responsive: Desktop 5 columnas */
-  @media (min-width: 1024px) {
-    .journey-container {
-      flex-direction: row;
-      max-width: 1200px;
-      gap: 20px;
-      align-items: stretch;
-    }
+  .card p {
+    margin: 0;
+    color: #333;
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
 
-    .journey-line {
-      left: 50px;
-      right: 50px;
-      top: 110px; /* Alineado con los números */
-      bottom: auto;
-      width: auto;
-      height: 3px;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-    }
-
-    .journey-step {
-      flex: 1;
-      flex-direction: column;
-      text-align: center;
+  /* MOBILE */
+  @media (max-width: 640px) {
+    .timeline {
       margin-left: 0;
-      margin-top: 50px;
-      padding: 40px 20px;
-      justify-content: flex-start;
     }
 
-    .step-number {
-      left: 50%;
-      transform: translateX(-50%);
-      top: -68px;
+    .timeline::before {
+      left: 13px;
     }
 
-    .step-icon {
-      margin-bottom: 20px;
-    }
-
-    .step-content h3 {
-      font-size: 1.1rem;
+    .card {
+      max-width: 100%;
     }
   }
 </style>
