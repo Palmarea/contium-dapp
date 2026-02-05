@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.2",
+    "chai": "^6.2.2",
+    "hardhat": "^3.1.6"
+  }
+}
