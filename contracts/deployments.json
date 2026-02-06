@@ -1,0 +1,10 @@
+{
+  "network": "zksys",
+  "chainId": 57042,
+  "rpc": "https://rpc-pob.dev11.top",
+  "explorerBase": "https://explorer-pob.dev11.top",
+  "token": "TSYS",
+  "deployer": "0xf78f554CC23165d6303D4fA6C1028d3467533548",
+  "DocumentRegistry": "0xd707cc8D9FC170fe100147a8903e3DB33D596322",
+  "ContiumBadge": "0x912675023673C6BD0045630194caeA746B564959"
+}
