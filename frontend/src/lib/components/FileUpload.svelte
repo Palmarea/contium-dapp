@@ -1,6 +1,6 @@
 <script lang="ts">
   let file: File | null = null;
-  let hash = "";
+  export let hash = "";
   let error = "";
   let dragging = false;
   let inputRef: HTMLInputElement;
@@ -58,10 +58,13 @@
 </script>
 
 <div
-  class="dropzone {dragging ? 'dragging' : ''}"
+  class="dropzone"
+  class:dragging
   on:dragover|preventDefault={() => dragging = true}
   on:dragleave={() => dragging = false}
   on:drop={onDrop}
+  role="button"
+  tabindex="0"
 >
   {#if !file}
     <p>Arrastra un archivo aquí o haz clic para seleccionar</p>
@@ -74,8 +77,8 @@
     <div class="info">
       <p><strong>Nombre:</strong> {file.name}</p>
       <p><strong>Tamaño:</strong> {(file.size / 1024).toFixed(2)} KB</p>
-      <p class="hash"><strong>SHA-256:</strong> {hash}</p>
-
+      <p class="hash"><strong>Hash SHA-256:</strong></p>
+      <code>0x{hash}</code>
       <button on:click={reset}>Cambiar archivo</button>
     </div>
   {/if}
@@ -115,15 +118,18 @@
     word-break: break-all;
   }
 
-  .hash {
-    margin-top: 12px;
-    font-family: monospace;
-    font-size: 0.9rem;
+  code {
+    display: block;
+    background: #020617;
+    padding: 12px;
+    border-radius: 8px;
     color: #38bdf8;
+    font-size: 0.85rem;
+    margin: 8px 0 16px;
+    word-break: break-all;
   }
 
   button {
-    margin-top: 16px;
     padding: 10px 18px;
     border-radius: 10px;
     border: none;
