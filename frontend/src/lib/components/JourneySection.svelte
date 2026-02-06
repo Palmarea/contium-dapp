@@ -2,48 +2,20 @@
   import { onMount } from 'svelte';
 
   const steps = [
-    {
-      icon: '📤',
-      title: 'UPLOAD',
-      text: 'Sube tu documento (PDF, DOC, imagen)'
-    },
-    {
-      icon: '🔐',
-      title: 'HASH',
-      text: 'Generamos huella digital SHA-256'
-    },
-    {
-      icon: '⛓️',
-      title: 'REGISTRO',
-      text: 'Guardamos hash en blockchain zkSYS'
-    },
-    {
-      icon: '✅',
-      title: 'VALIDACIÓN',
-      text: 'Verificamos y certificamos'
-    },
-    {
-      icon: '🏆',
-      title: 'BADGE NFT',
-      text: 'Recibe tu NFT de cumplimiento'
-    }
+    { icon: '📤', title: 'UPLOAD', text: 'Sube tu documento (PDF, DOC, imagen)' },
+    { icon: '🔐', title: 'HASH', text: 'Generamos huella digital SHA-256' },
+    { icon: '⛓️', title: 'REGISTRO', text: 'Guardamos hash en blockchain zkSYS' },
+    { icon: '✅', title: 'VALIDACIÓN', text: 'Verificamos y certificamos' },
+    { icon: '🏆', title: 'BADGE NFT', text: 'Recibe tu NFT de cumplimiento' }
   ];
 
-  let items = [];
+  let visible = false;
 
   onMount(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    items.forEach((el) => observer.observe(el));
+    // Hacer visible después de montar
+    setTimeout(() => {
+      visible = true;
+    }, 100);
   });
 </script>
 
@@ -56,11 +28,10 @@
       {#each steps as step, i}
         <div
           class="timeline-item"
-          bind:this={items[i]}
+          class:visible
           style="transition-delay: {i * 120}ms"
         >
           <div class="dot"></div>
-
           <div class="card">
             <span class="icon">{step.icon}</span>
             <h3>{step.title}</h3>
@@ -73,7 +44,6 @@
 </section>
 
 <style>
-  /* SECTION */
   .journey {
     background: #f8f9fa;
     padding: 6rem 1rem;
@@ -89,6 +59,7 @@
     font-size: 2.2rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    color: #202124;
   }
 
   .subtitle {
@@ -98,7 +69,6 @@
     font-size: 1.05rem;
   }
 
-  /* TIMELINE */
   .timeline {
     position: relative;
     margin-left: 1.5rem;
@@ -114,7 +84,6 @@
     background: #dcdfe3;
   }
 
-  /* ITEM */
   .timeline-item {
     position: relative;
     display: flex;
@@ -122,9 +91,7 @@
     margin-bottom: 3rem;
     opacity: 0;
     transform: translateY(30px);
-    transition:
-      opacity 0.6s ease,
-      transform 0.6s ease;
+    transition: opacity 0.6s ease, transform 0.6s ease;
   }
 
   .timeline-item.visible {
@@ -143,7 +110,6 @@
     z-index: 2;
   }
 
-  /* CARD */
   .card {
     background: #ffffff;
     border-radius: 14px;
@@ -173,7 +139,6 @@
     font-size: 0.95rem;
   }
 
-  /* MOBILE */
   @media (max-width: 640px) {
     .timeline {
       margin-left: 0;
