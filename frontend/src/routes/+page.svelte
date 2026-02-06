@@ -1,8 +1,8 @@
 <script>
-  import Hero from '../components/Hero.svelte';
-  import HowItWorks from '../components/HowItWorks.svelte';
-  import Features from '../components/Features.svelte';
-  import Footer from '../components/Footer.svelte';
+  import Hero from '$lib/components/Hero.svelte';
+  import HowItWorks from '$lib/components/HowItWorks.svelte'; // Corregido
+  import Features from '$lib/components/Features.svelte';     // Corregido
+  import Footer from '$lib/components/Footer.svelte';         // Corregido
 </script>
 
 <Hero />
