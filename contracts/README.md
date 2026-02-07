@@ -1,57 +1,87 @@
-# Sample Hardhat 3 Beta Project (`mocha` and `ethers`)
+# 🛡️ CONTIUM
 
-This project showcases a Hardhat 3 Beta project using `mocha` for tests and the `ethers` library for Ethereum interactions.
+**Verificación y certificación de documentos en blockchain**
 
-To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3 Beta](https://hardhat.org/hardhat3-beta-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+Contium es una dApp para empresas de comercio exterior que necesitan comprobar la autenticidad de documentos como facturas, contratos y certificados.
 
-## Project Overview
+## 🎯 ¿Qué problema resuelve?
 
-This example project includes:
+En comercio internacional, los documentos falsos o alterados causan pérdidas millonarias. Contium permite:
 
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using `mocha` and ethers.js
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+- **Registrar** documentos en blockchain (inmutable)
+- **Validar** que un documento es auténtico
+- **Certificar** con un NFT Badge como prueba de cumplimiento
 
-## Usage
+## 🚀 ¿Cómo funciona?
 
-### Running Tests
+1. 📤 **Sube tu documento** → Se genera un hash SHA-256
+2. ⛓️ **Registra el hash** → Se guarda en blockchain zkSYS
+3. ✅ **Valida** → El sistema verifica y te da puntos
+4. 🏆 **Mintea un Badge NFT** → Certificado digital
 
-To run all the tests in the project, execute the following command:
+## 🛠️ Tecnología
 
-```shell
+| Componente | Tecnología |
+|------------|------------|
+| Blockchain | zkSYS PoB DevNet (Syscoin L2) |
+| Smart Contracts | Solidity |
+| Frontend | SvelteKit |
+| Wallet | MetaMask |
+
+## 📜 Smart Contracts Deployados
+
+| Contrato | Función | Address |
+|----------|---------|---------|
+| DocumentRegistry | Registra y valida documentos | `0xd707cc8D9FC170fe100147a8903e3DB33D596322` |
+| ContiumBadge | NFT de certificación | `0x912675023673C6BD0045630194caeA746B564959` |
+
+**Network:** zkSYS PoB DevNet  
+**Chain ID:** 57042  
+**RPC:** https://rpc-pob.dev11.top  
+**Explorer:** https://explorer-pob.dev11.top
+
+## 📁 Estructura del Proyecto
+```
+contium-dapp/
+├── contracts/          # Smart contracts Solidity
+│   ├── contracts/      # DocumentRegistry.sol, ContiumBadge.sol
+│   ├── scripts/        # Deploy scripts
+│   ├── test/           # Tests unitarios
+│   └── hardhat.config.ts
+├── frontend/           # Aplicación SvelteKit
+│   └── src/
+│       ├── routes/     # Páginas (app, leaderboard)
+│       └── lib/        # Componentes y config
+└── docs/               # Documentación
+```
+
+## 🏃 Ejecutar Localmente
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Abre http://localhost:5173
+
+### Contracts (tests)
+```bash
+cd contracts
+npm install
 npx hardhat test
 ```
 
-You can also selectively run the Solidity or `mocha` tests:
+## 🔗 Links
 
-```shell
-npx hardhat test solidity
-npx hardhat test mocha
-```
+- [Explorer](https://explorer-pob.dev11.top)
+- [DocumentRegistry](https://explorer-pob.dev11.top/address/0xd707cc8D9FC170fe100147a8903e3DB33D596322)
+- [ContiumBadge](https://explorer-pob.dev11.top/address/0x912675023673C6BD0045630194caeA746B564959)
 
-### Make a deployment to Sepolia
+## 👥 Equipo
 
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
+**ChainPort** - Desarrollado para el **zkSYS Hackathon 2025**
 
-To run the deployment to a local chain:
+---
 
-```shell
-npx hardhat ignition deploy ignition/modules/Counter.ts
-```
-
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
-
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
-
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
-
-```shell
-npx hardhat keystore set SEPOLIA_PRIVATE_KEY
-```
-
-After setting the variable, you can run the deployment with the Sepolia network:
-
-```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
-```
+© 2025 Contium by ChainPort - RegTech on Syscoin
