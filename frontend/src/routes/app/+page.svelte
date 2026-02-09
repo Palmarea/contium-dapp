@@ -4,15 +4,36 @@
   import RegisterButton from '$lib/components/RegisterButton.svelte';
   import ValidateButton from '$lib/components/ValidateButton.svelte';
   import MintBadgeButton from '$lib/components/MintBadgeButton.svelte';
+  import { CONTRACTS, ABIS } from '$lib/config.js';
 
   let walletAddress = "";
   let isConnected = false;
   let documentHash = "";
 
-  // Stats (por ahora estáticos, luego del contrato)
   let docsCount = 0;
   let validatedCount = 0;
   let score = 0;
+
+  async function loadStats() {
+    if (!walletAddress) return;
+    try {
+      const { ethers } = await import('ethers');
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const contract = new ethers.Contract(
+        CONTRACTS.documentRegistry,
+        ABIS.documentRegistry,
+        provider
+      );
+      const s = await contract.getScore(walletAddress);
+      score = Number(s);
+      validatedCount = Math.floor(score / 10);
+    } catch (e) {
+      console.error('Error cargando stats:', e);
+    }
+  }
+
+  // Recargar stats cuando cambie la wallet
+  $: if (walletAddress) loadStats();
 </script>
 
 <div class="dashboard-container">
@@ -37,7 +58,7 @@
         <h2>Verificación Documental</h2>
         <p>Sube tu documento para generar hash y registrar en blockchain.</p>
         
-        {#if isConnected}
+        {#if isConnected || walletAddress}
           <FileUpload bind:hash={documentHash} />
           
           {#if documentHash}
@@ -47,8 +68,8 @@
             </div>
             
             <div class="actions">
-              <RegisterButton hash={documentHash} />
-              <ValidateButton hash={documentHash} />
+              <RegisterButton hash={documentHash} on:registered={() => setTimeout(loadStats, 3000)} />
+              <ValidateButton hash={documentHash} on:validated={() => setTimeout(loadStats, 3000)} />
               <MintBadgeButton hash={documentHash} />
             </div>
           {/if}

@@ -1,5 +1,7 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
   import { CONTRACTS, ABIS, NETWORK } from '$lib/config.js';
+  const dispatch = createEventDispatcher();
 
   export let hash = "";
 
@@ -34,12 +36,15 @@
 
       txHash = receipt.hash;
       status = 'success';
+      dispatch('registered');
     } catch (e) {
       status = 'idle';
       if (e.code === 4001) {
         errorMsg = 'Transacción cancelada';
       } else if (e.message?.includes('ya registrado')) {
         errorMsg = 'Este documento ya fue registrado';
+      } else if (e.message?.includes('missing revert data') || e.message?.includes('CALL_EXCEPTION')) {
+  errorMsg = 'Este documento ya fue registrado o no tienes permisos';
       } else {
         errorMsg = e.shortMessage || e.message || 'Error al registrar';
       }
@@ -55,7 +60,7 @@
   {#if status === 'loading'}
     Registrando...
   {:else if status === 'success'}
-    ✅ Registrado!
+    ✅ ¡Registrado!
   {:else}
     📝 Registrar en Blockchain
   {/if}

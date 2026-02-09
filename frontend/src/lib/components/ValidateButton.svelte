@@ -1,5 +1,7 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
   import { CONTRACTS, ABIS, NETWORK } from '$lib/config.js';
+  const dispatch = createEventDispatcher();
 
   export let hash = "";
 
@@ -34,6 +36,7 @@
 
       txHash = receipt.hash;
       status = 'success';
+      dispatch('validated');
     } catch (e) {
       status = 'idle';
       if (e.code === 4001) {

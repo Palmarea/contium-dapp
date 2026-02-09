@@ -60,7 +60,7 @@
 <button 
   class="mint-btn" 
   on:click={onMint} 
-  disabled={!hash || status === 'loading'}
+  disabled={!hash || status === 'loading' || status === 'success'}
 >
   {#if status === 'loading'}
     Minteando...

@@ -1,73 +1,107 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte';
   import { browser } from '$app/environment';
-  import { ethers } from 'ethers';
+  import { NETWORK } from '$lib/config.js';
 
   const dispatch = createEventDispatcher();
 
-  // Configuración de la Red zkSYS
   const ZKSYS_CONFIG = {
-    chainId: '0xDEB2', // 57042
-    chainName: 'zkSYS PoB DevNet',
-    rpcUrls: ['https://rpc-pob.dev11.top'],
-    nativeCurrency: { name: 'TSYS', symbol: 'TSYS', decimals: 18 },
-    blockExplorerUrls: ['https://explorer-pob.dev11.top']
+    chainId: NETWORK.chainIdHex,
+    chainName: NETWORK.name,
+    rpcUrls: [NETWORK.rpcUrl],
+    nativeCurrency: NETWORK.currency,
+    blockExplorerUrls: [NETWORK.explorer]
   };
 
-  // Estados
   export let address = "";
   export let isConnected = false;
-  let status = "disconnected"; // disconnected, connecting, wrong_network, connected
+  let status = "disconnected";
+  let showNetworkModal = false;
 
-  async function checkNetwork() {
-    if (!window.ethereum) return false;
-    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-    if (chainId !== ZKSYS_CONFIG.chainId) {
-      status = "wrong_network";
-      return false;
-    }
-    return true;
+  // Detectar Pali O MetaMask (Pali primero)
+  function getProvider() {
+    if (typeof window === 'undefined') return null;
+    // Pali EVM se inyecta en window.ethereum con wallet === 'pali-v2'
+    if (window.ethereum) return window.ethereum;
+    return null;
   }
 
-  async function switchNetwork() {
+  function getProviderName() {
+    if (typeof window === 'undefined') return '';
+    if (window.ethereum?.wallet === 'pali-v2') return 'Pali Wallet';
+    if (window.ethereum) return 'Wallet';
+    return '';
+  }
+
+  async function checkNetwork() {
+    const provider = getProvider();
+    if (!provider) return false;
+    const chainId = await provider.request({ method: 'eth_chainId' });
+    return chainId === ZKSYS_CONFIG.chainId;
+  }
+
+  async function switchOrAddNetwork() {
+    const provider = getProvider();
+    if (!provider) return false;
     try {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: ZKSYS_CONFIG.chainId }],
+      await provider.request({
+        method: 'wallet_addEthereumChain',
+        params: [ZKSYS_CONFIG],
       });
-    } catch (switchError) {
-      if (switchError.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [ZKSYS_CONFIG],
-          });
-        } catch (addError) {
-          console.error("Error agregando red", addError);
-        }
-      }
+      return true;
+    } catch (err) {
+      throw err;
     }
   }
 
   export async function connect() {
-    if (!window.ethereum) return alert("Instala MetaMask");
-    
+    const provider = getProvider();
+    if (!provider) {
+      return alert("No se detectó wallet. Instala Pali Wallet desde https://paliwallet.com");
+    }
+
     status = "connecting";
     try {
-      const isCorrectNet = await checkNetwork();
-      if (!isCorrectNet) {
-        await switchNetwork();
+      // Pedir cuentas primero (esto abre Pali UNA vez)
+      const accounts = await provider.request({ method: 'eth_requestAccounts' });
+      
+      // Verificar red después
+      const chainId = await provider.request({ method: 'eth_chainId' });
+      if (chainId.toLowerCase() !== ZKSYS_CONFIG.chainId.toLowerCase()) {
+        showNetworkModal = true;
+        status = "wrong_network";
+        return;
       }
 
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       address = accounts[0];
       isConnected = true;
       status = "connected";
-      localStorage.setItem('walletConnected', 'true');
       dispatch('connected', { address });
     } catch (err) {
       status = "disconnected";
       console.error(err);
+    }
+  }
+
+  async function handleAddNetwork() {
+    try {
+      await switchOrAddNetwork();
+      showNetworkModal = false;
+      
+      // Verificar que ahora sí está en la red correcta
+      const provider = getProvider();
+      const chainId = await provider.request({ method: 'eth_chainId' });
+      if (chainId.toLowerCase() === ZKSYS_CONFIG.chainId.toLowerCase()) {
+        const accounts = await provider.request({ method: 'eth_accounts' });
+        if (accounts.length > 0) {
+          address = accounts[0];
+          isConnected = true;
+          status = "connected";
+          dispatch('connected', { address });
+        }
+      }
+    } catch (err) {
+      console.error("Error agregando red:", err);
     }
   }
 
@@ -84,33 +118,31 @@
   }
 
   onMount(async () => {
-    if (browser && window.ethereum) {
-      // Auto-reconexión
-      if (localStorage.getItem('walletConnected') === 'true') {
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-        if (accounts.length > 0) connect();
-      }
+    if (browser) {
+      const provider = getProvider();
+      if (!provider) return;
 
-      // Listeners
-      window.ethereum.on('accountsChanged', (accounts) => {
+      // Solo escuchar cambios, NO auto-reconectar
+      provider.on?.('accountsChanged', (accounts) => {
         if (accounts.length === 0) disconnect();
-        else { address = accounts[0]; connect(); }
+        else { address = accounts[0]; }
       });
-      window.ethereum.on('chainChanged', () => window.location.reload());
+      provider.on?.('chainChanged', () => window.location.reload());
     }
   });
 </script>
 
+<!-- BOTÓN DE WALLET -->
 <div class="wallet-container">
   {#if status === "disconnected"}
     <button class="btn-connect" on:click={connect}>
-      Connect Wallet
+      🔗 Conectar {getProviderName() || 'Wallet'}
     </button>
   {:else if status === "connecting"}
     <button class="btn-status" disabled>Conectando...</button>
   {:else if status === "wrong_network"}
-    <button class="btn-wrong" on:click={switchNetwork}>
-      Cambiar a zkSYS
+    <button class="btn-wrong" on:click={() => (showNetworkModal = true)}>
+      ⚠️ Red incorrecta
     </button>
   {:else}
     <div class="connected-box">
@@ -120,40 +152,79 @@
   {/if}
 </div>
 
+<!-- MODAL DE RED (CONT-02) -->
+{#if showNetworkModal}
+  <div class="modal-overlay" on:click={() => (showNetworkModal = false)}>
+    <div class="modal" on:click|stopPropagation>
+      <h2>🔗 Agregar Red zkSYS</h2>
+      <p>Para usar Contium necesitas conectarte a la red zkSYS PoB DevNet.</p>
+      
+      <div class="network-info">
+        <p><strong>Red:</strong> {NETWORK.name}</p>
+        <p><strong>Chain ID:</strong> {NETWORK.chainId}</p>
+        <p><strong>Token:</strong> {NETWORK.currency.symbol}</p>
+      </div>
+
+      <div class="buttons">
+        <button class="btn-secondary" on:click={() => (showNetworkModal = false)}>
+          Cancelar
+        </button>
+        <button class="btn-primary" on:click={handleAddNetwork}>
+          ✅ Sí, agregar red
+        </button>
+      </div>
+    </div>
+  </div>
+{/if}
+
 <style>
   .btn-connect {
-    background: #1a73e8;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
+    background: #6c5ce7; color: white; border: none;
+    padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold;
   }
+  .btn-connect:hover { background: #5a4bd1; }
   .btn-wrong {
-    background: #fbbc05;
-    color: #000;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
+    background: #fbbc05; color: #000; border: none;
+    padding: 10px 20px; border-radius: 6px; cursor: pointer;
+  }
+  .btn-status {
+    background: #334155; color: #94a3b8; border: none;
+    padding: 10px 20px; border-radius: 6px;
   }
   .connected-box {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #e8f0fe;
-    padding: 5px 15px;
-    border-radius: 20px;
-    border: 1px solid #1a73e8;
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(108, 92, 231, 0.15); padding: 5px 15px;
+    border-radius: 20px; border: 1px solid #6c5ce7;
   }
-  .addr { font-family: monospace; color: #1a73e8; font-weight: bold; }
+  .addr { font-family: monospace; color: #6c5ce7; font-weight: bold; }
   .btn-disconnect {
-    background: none;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    font-size: 1.2rem;
+    background: none; border: none; color: #666; cursor: pointer; font-size: 1.2rem;
   }
   .btn-disconnect:hover { color: #d93025; }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: center; z-index: 1000;
+  }
+  .modal {
+    background: #1e293b; color: white; border-radius: 16px;
+    padding: 2rem; max-width: 420px; width: 90%; border: 1px solid #334155;
+  }
+  .modal h2 { margin-top: 0; }
+  .network-info {
+    background: rgba(255,255,255,0.05); border-radius: 8px;
+    padding: 1rem; margin: 1rem 0;
+  }
+  .network-info p { margin: 0.3rem 0; }
+  .buttons { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; }
+  .btn-primary {
+    background: #6c5ce7; color: white; border: none;
+    padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;
+  }
+  .btn-primary:hover { background: #5a4bd1; }
+  .btn-secondary {
+    background: transparent; color: #aaa; border: 1px solid #334155;
+    padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;
+  }
 </style>
