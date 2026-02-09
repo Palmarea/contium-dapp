@@ -1,4 +1,5 @@
 <script>
+  import InstructionPanel from '$lib/components/InstructionPanel.svelte';
   import WalletConnect from '$lib/components/WalletConnect.svelte';
   import FileUpload from '$lib/components/FileUpload.svelte';
   import RegisterButton from '$lib/components/RegisterButton.svelte';
@@ -8,11 +9,22 @@
   let walletAddress = "";
   let isConnected = false;
   let documentHash = "";
+  
+  // Lógica de pasos
+  let currentStep = 1;
 
   // Stats (por ahora estáticos, luego del contrato)
   let docsCount = 0;
   let validatedCount = 0;
   let score = 0;
+
+  function nextStep() {
+    if (currentStep < 4) currentStep++;
+  }
+
+  // Reactividad para el flujo
+  $: if (!documentHash && isConnected) currentStep = 1;
+  $: if (documentHash && currentStep === 1) currentStep = 2;
 </script>
 
 <div class="dashboard-container">
@@ -33,6 +45,11 @@
 
   <div class="grid-layout">
     <main class="main-content">
+      
+      {#if isConnected}
+        <InstructionPanel {currentStep} />
+      {/if}
+
       <div class="upload-card">
         <h2>Verificación Documental</h2>
         <p>Sube tu documento para generar hash y registrar en blockchain.</p>
@@ -47,9 +64,13 @@
             </div>
             
             <div class="actions">
-              <RegisterButton hash={documentHash} />
-              <ValidateButton hash={documentHash} />
-              <MintBadgeButton hash={documentHash} />
+              {#if currentStep === 2}
+                <RegisterButton hash={documentHash} on:success={nextStep} />
+              {:else if currentStep === 3}
+                <ValidateButton hash={documentHash} on:success={nextStep} />
+              {:else if currentStep === 4}
+                <MintBadgeButton hash={documentHash} on:success={() => alert("¡Badge Minteado!")} />
+              {/if}
             </div>
           {/if}
         {:else}
@@ -63,11 +84,11 @@
     <aside class="sidebar">
       <h3>¿Cómo funciona?</h3>
       <ol class="steps-list">
-        <li>📤 Sube tu documento</li>
-        <li>🔐 Se genera el hash SHA-256</li>
-        <li>⛓️ Registra el hash en blockchain</li>
-        <li>✅ Valida para ganar puntos</li>
-        <li>🏆 Mintea tu badge NFT</li>
+        <li style:color={currentStep >= 1 ? '#38bdf8' : ''}>📤 Sube tu documento</li>
+        <li style:color={currentStep >= 2 ? '#38bdf8' : ''}>🔐 Se genera el hash</li>
+        <li style:color={currentStep >= 2 ? '#38bdf8' : ''}>⛓️ Registra en blockchain</li>
+        <li style:color={currentStep >= 3 ? '#38bdf8' : ''}>✅ Valida para ganar puntos</li>
+        <li style:color={currentStep >= 4 ? '#38bdf8' : ''}>🏆 Mintea tu badge NFT</li>
       </ol>
       <a href="/leaderboard" class="leaderboard-link">Ver Leaderboard →</a>
     </aside>
@@ -112,7 +133,7 @@
   .sidebar h3 { margin-top: 0; color: #f8fafc; }
   
   .steps-list { padding-left: 1.2rem; color: #94a3b8; }
-  .steps-list li { margin-bottom: 0.8rem; }
+  .steps-list li { margin-bottom: 0.8rem; transition: color 0.3s ease; }
   
   .leaderboard-link { display: block; margin-top: 1.5rem; color: #38bdf8; text-decoration: none; font-weight: 600; }
   .leaderboard-link:hover { text-decoration: underline; }
