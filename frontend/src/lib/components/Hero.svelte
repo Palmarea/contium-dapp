@@ -1,5 +1,5 @@
-<!-- Hero.svelte -->
 <section class="hero">
+  <div class="bg-glow"></div>
   <div class="container fade-in">
     <h1>Verifica documentos en blockchain</h1>
     <p>Registra, valida y certifica con NFTs en zkSYS</p>
@@ -9,62 +9,71 @@
 
 <style>
   .hero {
-    min-height: 70vh;
+    min-height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 4rem 1rem;
-    background: #ffffff;
+    padding: 0 1rem;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bg-glow {
+    position: absolute;
+    width: 60vw;
+    height: 60vh;
+    background: radial-gradient(circle, rgba(0, 113, 227, 0.15) 0%, transparent 70%);
+    top: -10%;
+    filter: blur(80px);
+    z-index: 0;
   }
 
   .container {
-    max-width: 720px;
+    position: relative;
+    z-index: 1;
+    max-width: 850px;
   }
 
   h1 {
-    font-size: 2.6rem;
-    font-weight: 700;
-    color: #1a73e8;
-    margin-bottom: 1rem;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    color: #fff;
+    margin-bottom: 1.5rem;
   }
 
   p {
-    font-size: 1.2rem;
-    color: #444;
-    margin-bottom: 2rem;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: #86868b;
+    margin-bottom: 3rem;
+    font-weight: 400;
   }
 
   .cta {
     display: inline-block;
-    background: #1a73e8;
-    color: #fff;
-    padding: 0.9rem 2rem;
-    border-radius: 6px;
-    font-size: 1rem;
+    background: #fff;
+    color: #000;
+    padding: 14px 32px;
+    border-radius: 980px;
     font-weight: 600;
+    font-size: 1.1rem;
     text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease;
   }
 
   .cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(26, 115, 232, 0.3);
+    transform: scale(1.05);
   }
 
-  /* Fade-in animation */
   .fade-in {
-    animation: fadeInUp 0.9s ease-out forwards;
+    animation: fadeInUp 1.2s cubic-bezier(0.2, 1, 0.3, 1);
   }
 
   @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
