@@ -17,7 +17,10 @@
 		"vite": "^7.3.1"
 	},
 	"dependencies": {
+		"@sveltejs/adapter-vercel": "^6.3.1",
 		"canvas-confetti": "^1.9.4",
-		"ethers": "^6.16.0"
+		"ethers": "^6.16.0",
+		"install": "^0.13.0",
+		"npm": "^11.9.0"
 	}
 }
