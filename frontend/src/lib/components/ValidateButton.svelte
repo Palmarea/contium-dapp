@@ -1,4 +1,5 @@
 <script>
+  import TxConfirmation from "./TxConfirmation.svelte";
   import { createEventDispatcher } from 'svelte';
   import { CONTRACTS, ABIS, NETWORK } from '$lib/config.js';
   const dispatch = createEventDispatcher();
@@ -16,9 +17,10 @@
 
   async function onValidate() {
     if (!hash) return;
-    
+
     errorMsg = '';
     status = 'loading';
+    txHash = '';
 
     try {
       const { ethers } = await import('ethers');
@@ -26,15 +28,15 @@
       const signer = await provider.getSigner();
 
       const contract = new ethers.Contract(
-        CONTRACTS.documentRegistry, 
-        ABIS.documentRegistry, 
+        CONTRACTS.documentRegistry,
+        ABIS.documentRegistry,
         signer
       );
 
       const tx = await contract.validateDocument(normalizeHash(hash));
-      const receipt = await tx.wait();
+      txHash = tx.hash;              // ✅ AQUÍ (antes de esperar)
+      await tx.wait();               // ✅ espera minado
 
-      txHash = receipt.hash;
       status = 'success';
       dispatch('validated');
     } catch (e) {
@@ -54,9 +56,9 @@
   }
 </script>
 
-<button 
-  class="validate-btn" 
-  on:click={onValidate} 
+<button
+  class="validate-btn"
+  on:click={onValidate}
   disabled={!hash || status === 'loading' || status === 'success'}
 >
   {#if status === 'loading'}
@@ -68,6 +70,9 @@
   {/if}
 </button>
 
+<!-- ✅ barra de confirmaciones -->
+<TxConfirmation txHash={txHash} />
+
 {#if status === 'success' && txHash}
   <a href="{NETWORK.explorer}/tx/{txHash}" target="_blank" class="tx-link">
     Ver transacción →
@@ -77,38 +82,3 @@
 {#if errorMsg}
   <p class="error">{errorMsg}</p>
 {/if}
-
-<style>
-  .validate-btn {
-    background: #10b981;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .validate-btn:hover:not(:disabled) {
-    background: #059669;
-  }
-
-  .validate-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .tx-link {
-    display: block;
-    margin-top: 8px;
-    color: #38bdf8;
-    font-size: 0.9rem;
-  }
-
-  .error {
-    color: #f87171;
-    margin-top: 8px;
-    font-size: 0.9rem;
-  }
-</style>
