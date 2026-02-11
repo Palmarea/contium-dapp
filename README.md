@@ -117,7 +117,7 @@ DocumentRegistry
 
 | Miembro   | Rol                                                         |   
 |-----------|-------------------------------------------------------------|
-| manzana    | CTO & PM — Fullstack Dev, Architecture, Wallet Integration |
+| Paloma    | CTO & PM — Fullstack Dev, Architecture, Wallet Integration |
 | Michael   | Blockchain Engineer — Smart Contracts, Backend Integration  |
 | Jesus     | Research & Documentation — Blockchain Economics             |
 | Andre     | QA Engineer - Smart Contract Developer                      |
