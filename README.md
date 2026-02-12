@@ -1,56 +1,56 @@
 # Contium
 
-**Plataforma de verificación documental descentralizada sobre zkSYS**
+**Decentralized document verification platform on zkSYS**
 
-Contium permite a los usuarios registrar, validar y certificar documentos en la blockchain zkSYS de Syscoin, generando una huella digital (hash SHA-256) inmutable que garantiza la autenticidad e integridad de cualquier archivo.
-
----
-
-## Descripcion del Proyecto
-
-Contium es una dApp construida para el hackathon Proof-of-Builders de Syscoin. Resuelve el problema de la verificacion documental: como probar que un documento no ha sido alterado y que fue registrado en un momento especifico.
-
-Funcionalidades principales:
-
-- Registrar documentos en blockchain generando un hash SHA-256 unico.
-- Validar documentos previamente registrados y ganar puntos de reputacion.
-- Mintear badges NFT (ERC-721) como prueba de participacion.
-- Competir en el leaderboard con otros validadores.
+Contium allows users to register, validate, and certify documents on Syscoin's zkSYS blockchain, generating an immutable digital fingerprint (SHA-256 hash) that guarantees the authenticity and integrity of any file.
 
 ---
 
-## Stack Tecnologico
+## Project Description
 
-| Capa              | Tecnologia                              |
+Contium is a dApp built for the Syscoin Proof-of-Builders hackathon. It solves the document verification problem: how to prove that a document has not been altered and was registered at a specific point in time.
+
+Core functionalities:
+
+- Register documents on the blockchain by generating a unique SHA-256 hash.
+- Validate previously registered documents and earn reputation points.
+- Mint NFT badges (ERC-721) as proof of participation.
+- Compete on the leaderboard with other validators.
+
+---
+
+## Tech Stack
+
+| Layer             | Technology                              |
 |-------------------|-----------------------------------------|
 | Frontend          | SvelteKit + Vite                        |
 | Wallet            | Pali Wallet (EVM)                       |
 | Blockchain        | zkSYS PoB DevNet (Chain ID: 57042)      |
 | Smart Contracts   | Solidity ^0.8.28 (Hardhat 3)           |
-| Token Nativo      | TSYS                                    |
+| Native Token      | TSYS                                    |
 
 ---
 
-## Contratos Desplegados
+## Deployed Contracts
 
-| Contrato          | Direccion                                       | Funcion                                          |
+| Contract          | Address                                         | Purpose                                          |
 |-------------------|-------------------------------------------------|--------------------------------------------------|
-| DocumentRegistry  | `0xd707cc8D9FC170fe100147a8903e3DB33D596322`    | Registro y validacion de documentos, sistema de puntaje |
-| ContiumBadge      | `0x912675023673C6BD0045630194caeA746B564959`    | NFT Badge ERC-721 para certificar participacion  |
+| DocumentRegistry  | `0xd707cc8D9FC170fe100147a8903e3DB33D596322`    | Document registration and validation, scoring system |
+| ContiumBadge      | `0x912675023673C6BD0045630194caeA746B564959`    | ERC-721 NFT Badge for certification              |
 
-- **Red:** zkSYS PoB DevNet
+- **Network:** zkSYS PoB DevNet
 - **RPC:** `https://rpc-pob.dev11.top`
 - **Explorer:** `https://explorer-pob.dev11.top`
 
 ---
 
-## Instalacion y Ejecucion
+## Installation and Setup
 
-### Prerequisitos
+### Prerequisites
 
 - Node.js v18+
-- Pali Wallet (extension de navegador) — https://paliwallet.com
-- TSYS tokens en la red zkSYS PoB DevNet
+- Pali Wallet (browser extension) — https://paliwallet.com
+- TSYS tokens on the zkSYS PoB DevNet network
 
 ### Frontend
 
@@ -60,36 +60,36 @@ npm install
 npm run dev
 ```
 
-La aplicacion estara disponible en `http://localhost:5173`
+The application will be available at `http://localhost:5173`
 
 ### Smart Contracts
 
 ```bash
 cd contracts
 npm install
-cp .env.example .env  # Configura tu PRIVATE_KEY
-npx hardhat test      # Ejecutar tests (15 tests)
+cp .env.example .env  # Configure your PRIVATE_KEY
+npx hardhat test      # Run tests (15 tests)
 npx hardhat run scripts/deploy.js --network zksys  # Deploy
 ```
 
 ---
 
-## Flujo de Usuario
+## User Flow
 
-1. **Conectar Wallet** — El usuario conecta Pali Wallet y se agrega la red zkSYS automaticamente.
-2. **Subir Documento** — Se selecciona un archivo y se genera el hash SHA-256 localmente. El archivo nunca sale del navegador.
-3. **Registrar en Blockchain** — El hash se registra en el contrato DocumentRegistry con timestamp inmutable.
-4. **Validar Documento** — El usuario valida el documento y gana +10 puntos de reputacion.
-5. **Mint Badge NFT** — Se mintea un badge ERC-721 como certificado de participacion.
+1. **Connect Wallet** — The user connects Pali Wallet and the zkSYS network is added automatically.
+2. **Upload Document** — A file is selected and the SHA-256 hash is generated locally. The file never leaves the browser.
+3. **Register on Blockchain** — The hash is registered on the DocumentRegistry contract with an immutable timestamp.
+4. **Validate Document** — The user validates the document and earns +10 reputation points.
+5. **Mint Badge NFT** — An ERC-721 badge is minted as a certificate of participation.
 
 ---
 
-## Privacidad y Seguridad
+## Privacy and Security
 
-- Los documentos nunca se suben a ningun servidor ni a la blockchain.
-- Solo se registra el hash SHA-256 del documento, que es irreversible.
-- El hash se genera localmente en el navegador del usuario.
-- La verificacion es trustless: cualquiera puede comprobar si un hash esta registrado.
+- Documents are never uploaded to any server or to the blockchain.
+- Only the SHA-256 hash of the document is recorded, which is irreversible.
+- The hash is generated locally in the user's browser.
+- Verification is trustless: anyone can check if a hash is registered.
 
 ---
 
@@ -100,7 +100,7 @@ cd contracts
 npx hardhat test
 ```
 
-Resultado esperado:
+Expected output:
 
 ```
 DocumentRegistry
@@ -113,29 +113,29 @@ DocumentRegistry
 
 ---
 
-## Equipo — ChainPort
+## Team — ChainPort
 
 | Miembro   | Rol                                                         |   
 |-----------|-------------------------------------------------------------|
-| Paloma    | CTO & PM — Fullstack Dev, Architecture, Wallet Integration |
-| Michael   | Blockchain Engineer — Smart Contracts, Backend Integration  |
-| Jesus     | Research & Documentation — Blockchain Economics             |
+| Paloma    | CTO & PM - Fullstack Dev, Architecture, Wallet Integration |
+| Michael   | Blockchain Engineer - Smart Contracts, Backend Integration  |
+| Jesus     | Research & Documentation - Blockchain Economics             |
 | Andre     | QA Engineer - Smart Contract Developer                      |
-| Josue     | Frontend Lead & Fullstack Dev — UI/UX, Landing Page         |
-| Kimberly  | QA & Fullstack Dev — Testing, Community Manager             |
+| Josue     | Frontend Lead & Fullstack Dev - UI/UX, Landing Page         |
+| Kimberly  | QA & Fullstack Dev - Testing, Community Manager             |
 
 ---
 
 ## Links
 
 - **Explorer:** https://explorer-pob.dev11.top
-- **GitHub:** https://github.com/Contium
-- **X (Twitter):** https://x.com/ContiumApp
+- **GitHub:** https://github.com/Palmarea/contium-dapp
+- **X (Twitter):** https://x.com/contiumx
 
 ---
 
-## Licencia
+## License
 
-MIT — Construido para el hackathon Proof-of-Builders de Syscoin.
+MIT — Built for the Syscoin Proof-of-Builders hackathon.
 
 Copyright 2025 Contium by ChainPort

@@ -1,76 +1,92 @@
-# 🔐 Privacidad y Seguridad - Contium
+# Privacy and Security — Contium
 
-## Resumen
+## Overview
 
-Contium está diseñado con **privacidad por diseño**. Los documentos originales **NUNCA** se suben a la blockchain ni a nuestros servidores.
+Contium is designed with privacy by design. Original documents are never uploaded to the blockchain or to any server.
 
-## ¿Qué datos se almacenan?
+## What Data Is Stored?
 
-| Dato | ¿Dónde se guarda? | ¿Es público? |
-|------|-------------------|--------------|
-| Documento original | **NUNCA** se sube | N/A |
-| Hash SHA-256 | Blockchain zkSYS | ✅ Sí |
-| Wallet address | Blockchain zkSYS | ✅ Sí |
-| Timestamp | Blockchain zkSYS | ✅ Sí |
-| Metadata opcional | Blockchain zkSYS | ✅ Sí |
+| Data               | Where is it stored?       | Is it public? |
+|--------------------|---------------------------|---------------|
+| Original document  | Never uploaded            | N/A           |
+| SHA-256 hash       | zkSYS blockchain          | Yes           |
+| Wallet address     | zkSYS blockchain          | Yes           |
+| Timestamp          | zkSYS blockchain          | Yes           |
+| Optional metadata  | zkSYS blockchain          | Yes           |
 
-## ¿Cómo funciona el hash?
+## How Does Hashing Work?
 
-El hash SHA-256 es una **huella digital única** del documento:
+The SHA-256 hash is a unique digital fingerprint of the document.
 
-- Es **irreversible**: No se puede reconstruir el documento desde el hash
-- Es **único**: Dos documentos diferentes NUNCA tienen el mismo hash
-- Es **determinista**: El mismo documento siempre genera el mismo hash
+- **Irreversible:** The document cannot be reconstructed from the hash.
+- **Unique:** Two different documents will never produce the same hash.
+- **Deterministic:** The same document always generates the same hash.
+
 ```
-Documento: factura_001.pdf (2.5 MB)
-     ↓
-Hash: 0x7a8b9c3d... (64 caracteres)
+Document: invoice_001.pdf (2.5 MB)
+     |
+     v
+Hash: 0x7a8b9c3d... (64 characters)
 ```
 
-## Procesamiento Local
+Any modification to the document, even a single character, produces an entirely different hash. This is how tampering is detected.
 
-Todo el procesamiento ocurre **en tu navegador**:
+## Local Processing
 
-1. Seleccionas un archivo
-2. Tu navegador calcula el hash SHA-256 localmente
-3. Solo el hash (64 caracteres) se envía a blockchain
-4. El archivo original **permanece en tu dispositivo**
+All processing occurs in the user's browser:
 
-## Seguridad de Smart Contracts
+1. The user selects a file.
+2. The browser computes the SHA-256 hash locally using the Web Crypto API.
+3. Only the hash (64 characters) is sent to the blockchain.
+4. The original file remains on the user's device.
+
+No data is transmitted to any external server at any point in this process.
+
+## Smart Contract Security
 
 ### DocumentRegistry
-- ✅ Solo el owner del documento puede validarlo
-- ✅ Un hash no puede registrarse dos veces
-- ✅ Los registros son inmutables
+
+- Only the document owner can validate their document.
+- A hash cannot be registered twice (prevents duplicate entries).
+- All records are immutable once written to the blockchain.
+- Events are emitted for every registration and validation for transparency.
 
 ### ContiumBadge (NFT)
-- ✅ Solo se puede mintear para documentos validados
-- ✅ Hereda de OpenZeppelin (audited)
-- ✅ Ownership controlado
 
-## Wallet y Transacciones
+- Badges can only be minted for validated documents.
+- Inherits from OpenZeppelin contracts (industry-standard, audited).
+- Ownership is controlled and traceable.
 
-- **MetaMask**: Tu wallet nunca comparte la private key con Contium
-- **Firmas**: Cada transacción requiere tu aprobación explícita
-- **Gas**: Pagas en TSYS directamente desde tu wallet
+## Wallet and Transactions
 
-## Recomendaciones de Seguridad
+- **Pali Wallet:** Your wallet never shares your private key with Contium. All signing happens inside the wallet extension.
+- **Transaction signing:** Every transaction requires explicit user approval through the wallet popup.
+- **Gas fees:** Paid in TSYS directly from the user's wallet.
+- **Network:** All transactions occur on the zkSYS PoB DevNet, which inherits Bitcoin's security via Syscoin merged mining.
 
-1. **Nunca compartas tu seed phrase** con nadie
-2. **Verifica la red** antes de firmar (zkSYS PoB DevNet)
-3. **Revisa las transacciones** antes de confirmar en MetaMask
-4. **Guarda tus documentos originales** - el hash no los reemplaza
+## Zero Trust Approach
 
-## Limitaciones
+Contium follows Zero Trust principles:
 
-- Los hashes son públicos (cualquiera puede ver que registraste algo)
-- No almacenamos el documento, solo su huella digital
-- Si pierdes el documento original, el hash no te ayuda a recuperarlo
+- No implicit trust is granted to any actor in the system.
+- Every action (registration, validation, minting) requires cryptographic authentication via wallet signature.
+- Document integrity is verified mathematically, not by trusting any institution or intermediary.
+- All operations are verifiable on-chain by any third party.
 
-## Contacto
+## Security Recommendations
 
-Para reportar vulnerabilidades de seguridad, contacta al equipo **ChainPort**.
+1. Never share your seed phrase or private key with anyone.
+2. Verify the network before signing transactions (zkSYS PoB DevNet, Chain ID 57042).
+3. Review transaction details before confirming in Pali Wallet.
+4. Keep your original documents safe. The hash does not replace the document itself.
+
+## Limitations
+
+- Hashes are public. Anyone can see that a registration was made, but not the document content.
+- Contium does not store documents. Only the cryptographic fingerprint is recorded.
+- If the original document is lost, the hash cannot be used to recover it.
+- The system proves integrity and timestamp, not the legal validity of the document content.
 
 ---
 
-© 2025 Contium by ChainPort
+Copyright 2025 Contium by ChainPort
