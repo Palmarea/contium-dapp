@@ -43,13 +43,13 @@
 		} catch (e) {
 			status = 'idle';
 			if (e.code === 4001) {
-				errorMsg = t("txCancelled");
+				errorMsg = $t("txCancelled");
 			} else if (e.message?.includes('ya registrado')) {
-				errorMsg = t("docAlreadyRegistered");
+				errorMsg = $t("docAlreadyRegistered");
 			} else if (e.message?.includes('missing revert data') || e.message?.includes('CALL_EXCEPTION')) {
-				errorMsg = t("noPermissions");
+				errorMsg = $t("noPermissions");
 			} else {
-				errorMsg = e.shortMessage || e.message || t("registerError");
+				errorMsg = e.shortMessage || e.message || $t("registerError");
 			}
 		}
 	}
@@ -61,11 +61,11 @@
 	disabled={!hash || status === 'loading' || status === 'success'}
 >
 	{#if status === 'loading'}
-		{t("registering")}
+		{$t("registering")}
 	{:else if status === 'success'}
-		{t("registered")}
+		{$t("registered")}
 	{:else}
-		{t("register")}
+		{$t("register")}
 	{/if}
 </button>
 
@@ -73,7 +73,7 @@
 
 {#if status === 'success' && txHash}
 	<a href="{NETWORK.explorer}/tx/{txHash}" target="_blank" class="tx-link">
-		{t("viewTx")}
+		{$t("viewTx")}
 	</a>
 {/if}
 

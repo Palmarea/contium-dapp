@@ -2,6 +2,7 @@
   import { onMount, createEventDispatcher } from 'svelte';
   import { browser } from '$app/environment';
   import { NETWORK } from '$lib/config.js';
+  import { t } from '$lib/i18n/t.js';
 
   const dispatch = createEventDispatcher();
 
@@ -18,10 +19,8 @@
   let status = "disconnected";
   let showNetworkModal = false;
 
-  // Detectar Pali O MetaMask (Pali primero)
   function getProvider() {
     if (typeof window === 'undefined') return null;
-    // Pali EVM se inyecta en window.ethereum con wallet === 'pali-v2'
     if (window.ethereum) return window.ethereum;
     return null;
   }
@@ -57,15 +56,13 @@
   export async function connect() {
     const provider = getProvider();
     if (!provider) {
-      return alert("No se detectó wallet. Instala Pali Wallet desde https://paliwallet.com");
+      return alert($t('wallet_noWallet'));
     }
 
     status = "connecting";
     try {
-      // Pedir cuentas primero (esto abre Pali UNA vez)
       const accounts = await provider.request({ method: 'eth_requestAccounts' });
-      
-      // Verificar red después
+
       const chainId = await provider.request({ method: 'eth_chainId' });
       if (chainId.toLowerCase() !== ZKSYS_CONFIG.chainId.toLowerCase()) {
         showNetworkModal = true;
@@ -87,8 +84,7 @@
     try {
       await switchOrAddNetwork();
       showNetworkModal = false;
-      
-      // Verificar que ahora sí está en la red correcta
+
       const provider = getProvider();
       const chainId = await provider.request({ method: 'eth_chainId' });
       if (chainId.toLowerCase() === ZKSYS_CONFIG.chainId.toLowerCase()) {
@@ -122,7 +118,6 @@
       const provider = getProvider();
       if (!provider) return;
 
-      // Solo escuchar cambios, NO auto-reconectar
       provider.on?.('accountsChanged', (accounts) => {
         if (accounts.length === 0) disconnect();
         else { address = accounts[0]; }
@@ -136,13 +131,13 @@
 <div class="wallet-container">
   {#if status === "disconnected"}
     <button class="btn-connect" on:click={connect}>
-      🔗 Conectar {getProviderName() || 'Wallet'}
+      {$t('wallet_connect')} {getProviderName() || 'Wallet'}
     </button>
   {:else if status === "connecting"}
-    <button class="btn-status" disabled>Conectando...</button>
+    <button class="btn-status" disabled>{$t('wallet_connecting')}</button>
   {:else if status === "wrong_network"}
     <button class="btn-wrong" on:click={() => (showNetworkModal = true)}>
-      ⚠️ Red incorrecta
+      {$t('wallet_wrongNetwork')}
     </button>
   {:else}
     <div class="connected-box">
@@ -152,25 +147,25 @@
   {/if}
 </div>
 
-<!-- MODAL DE RED (CONT-02) -->
+<!-- MODAL DE RED -->
 {#if showNetworkModal}
   <div class="modal-overlay" on:click={() => (showNetworkModal = false)}>
     <div class="modal" on:click|stopPropagation>
-      <h2>🔗 Agregar Red zkSYS</h2>
-      <p>Para usar Contium necesitas conectarte a la red zkSYS PoB DevNet.</p>
-      
+      <h2>{$t('wallet_addNetworkTitle')}</h2>
+      <p>{$t('wallet_addNetworkDesc')}</p>
+
       <div class="network-info">
-        <p><strong>Red:</strong> {NETWORK.name}</p>
-        <p><strong>Chain ID:</strong> {NETWORK.chainId}</p>
-        <p><strong>Token:</strong> {NETWORK.currency.symbol}</p>
+        <p><strong>{$t('wallet_network')}</strong> {NETWORK.name}</p>
+        <p><strong>{$t('wallet_chainId')}</strong> {NETWORK.chainId}</p>
+        <p><strong>{$t('wallet_token')}</strong> {NETWORK.currency.symbol}</p>
       </div>
 
       <div class="buttons">
         <button class="btn-secondary" on:click={() => (showNetworkModal = false)}>
-          Cancelar
+          {$t('wallet_cancel')}
         </button>
         <button class="btn-primary" on:click={handleAddNetwork}>
-          ✅ Sí, agregar red
+          {$t('wallet_addNetworkBtn')}
         </button>
       </div>
     </div>

@@ -56,14 +56,14 @@
 {#if txHash}
 	<div class="txc">
 		<div class="txc-top">
-			<span class="txc-label">{t("confirmations")}: {confirmations}/{TARGET}</span>
+			<span class="txc-label">{$t("confirmations")}: {confirmations}/{TARGET}</span>
 
 			{#if status === "confirmed"}
-				<span class="txc-ok">{t("ready")}</span>
+				<span class="txc-ok">{$t("ready")}</span>
 			{:else if status === "error"}
-				<span class="txc-bad">{t("error")}</span>
+				<span class="txc-bad">{$t("error")}</span>
 			{:else}
-				<span class="txc-wait">{t("waiting")}</span>
+				<span class="txc-wait">{$t("waiting")}</span>
 			{/if}
 		</div>
 

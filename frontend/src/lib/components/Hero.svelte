@@ -1,9 +1,13 @@
+<script>
+  import { t } from '$lib/i18n/t.js';
+</script>
+
 <section class="hero">
   <div class="bg-glow"></div>
   <div class="container fade-in">
-    <h1>Verifica documentos en blockchain</h1>
-    <p>Registra, valida y certifica con NFTs en zkSYS</p>
-    <a href="/app" class="cta">Launch App</a>
+    <h1>{$t('hero_title')}</h1>
+    <p>{$t('hero_subtitle')}</p>
+    <a href="/app" class="cta">{$t('hero_cta')}</a>
   </div>
 </section>
 

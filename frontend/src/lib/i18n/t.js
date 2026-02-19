@@ -1,8 +1,8 @@
-import { get } from "svelte/store";
+import { derived } from "svelte/store";
 import { lang } from "./lang";
 import { translations } from "./translations";
 
-export function t(key) {
-	const l = get(lang);
-	return translations[l]?.[key] ?? translations.es[key] ?? key;
-}
+export const t = derived(
+	lang,
+	($lang) => (key) => translations[$lang]?.[key] ?? translations.es[key] ?? key
+);

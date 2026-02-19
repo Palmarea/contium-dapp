@@ -1,12 +1,16 @@
+<script>
+  import { t } from '$lib/i18n/t.js';
+</script>
+
 <section class="features">
   <div class="container">
-    <h2>Características</h2>
+    <h2>{$t('feat_title')}</h2>
 
     <div class="vertical-stack">
       <div class="feature-card">
         <div class="content">
-          <h3>Blockchain</h3>
-          <p>Registro inmutable de documentos.</p>
+          <h3>{$t('feat_blockchain_title')}</h3>
+          <p>{$t('feat_blockchain_desc')}</p>
         </div>
         <div class="check-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -15,8 +19,8 @@
 
       <div class="feature-card">
         <div class="content">
-          <h3>Zero Trust</h3>
-          <p>Validaciones sin confianza previa.</p>
+          <h3>{$t('feat_zerotrust_title')}</h3>
+          <p>{$t('feat_zerotrust_desc')}</p>
         </div>
         <div class="check-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -25,8 +29,8 @@
 
       <div class="feature-card">
         <div class="content">
-          <h3>IA Preventiva</h3>
-          <p>Alertas ante fraudes.</p>
+          <h3>{$t('feat_ai_title')}</h3>
+          <p>{$t('feat_ai_desc')}</p>
         </div>
         <div class="check-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -44,7 +48,7 @@
   }
 
   .container {
-    max-width: 850px; /* Alineado al tamaño del Journey */
+    max-width: 850px;
     margin: 0 auto;
   }
 
@@ -86,7 +90,6 @@
     border-color: #0071e3;
   }
 
-  /* El contenido interno */
   .content {
     flex: 1;
   }
@@ -114,7 +117,6 @@
     color: #424245;
   }
 
-  /* El check que aparece */
   .check-icon {
     width: 40px;
     height: 40px;
@@ -139,7 +141,6 @@
     transform: translateX(0) scale(1);
   }
 
-  /* Efecto de click */
   .feature-card:active {
     transform: scale(0.98);
   }
@@ -149,10 +150,10 @@
       padding: 30px;
       border-radius: 24px;
     }
-    
+
     h3 { font-size: 1.5rem; }
     p { font-size: 1.1rem; }
-    
+
     .check-icon {
       width: 32px;
       height: 32px;

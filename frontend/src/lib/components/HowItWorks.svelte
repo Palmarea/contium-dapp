@@ -1,16 +1,17 @@
+<script>
+  import { t } from '$lib/i18n/t.js';
+</script>
+
 <section class="how">
   <div class="container">
-    <h2>¿Qué hace Contium?</h2>
-    <p>
-      Contium es una herramienta que registra el hash de tus documentos en blockchain,
-      garantizando integridad y trazabilidad.
-    </p>
+    <h2>{$t('how_title')}</h2>
+    <p>{$t('how_desc')}</p>
   </div>
 </section>
 
 <style>
   .how {
-    background: #f5f5f7; /* Gris claro tipo Apple */
+    background: #f5f5f7;
     padding: 120px 20px;
     text-align: center;
     color: #1d1d1f;

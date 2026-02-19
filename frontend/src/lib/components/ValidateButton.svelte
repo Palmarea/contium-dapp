@@ -43,15 +43,15 @@
 		} catch (e) {
 			status = 'idle';
 			if (e.code === 4001) {
-				errorMsg = t("txCancelled");
+				errorMsg = $t("txCancelled");
 			} else if (e.message?.includes('ya validado')) {
-				errorMsg = t("docAlreadyValidated");
+				errorMsg = $t("docAlreadyValidated");
 			} else if (e.message?.includes('no existe')) {
-				errorMsg = t("registerFirst");
+				errorMsg = $t("registerFirst");
 			} else if (e.message?.includes('solo owner')) {
-				errorMsg = t("onlyOwnerValidate");
+				errorMsg = $t("onlyOwnerValidate");
 			} else {
-				errorMsg = e.shortMessage || e.message || t("validateError");
+				errorMsg = e.shortMessage || e.message || $t("validateError");
 			}
 		}
 	}
@@ -63,11 +63,11 @@
 	disabled={!hash || status === 'loading' || status === 'success'}
 >
 	{#if status === 'loading'}
-		{t("validating")}
+		{$t("validating")}
 	{:else if status === 'success'}
-		{t("validated")}
+		{$t("validated")}
 	{:else}
-		{t("validate")}
+		{$t("validate")}
 	{/if}
 </button>
 
@@ -75,7 +75,7 @@
 
 {#if status === 'success' && txHash}
 	<a href="{NETWORK.explorer}/tx/{txHash}" target="_blank" class="tx-link">
-		{t("viewTx")}
+		{$t("viewTx")}
 	</a>
 {/if}
 

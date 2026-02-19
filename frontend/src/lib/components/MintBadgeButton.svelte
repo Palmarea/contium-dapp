@@ -45,11 +45,11 @@
 		} catch (e) {
 			status = 'idle';
 			if (e.code === 4001) {
-				errorMsg = t("txCancelled");
+				errorMsg = $t("txCancelled");
 			} else if (e.message?.includes('onlyOwner')) {
-				errorMsg = t("onlyOwnerMint");
+				errorMsg = $t("onlyOwnerMint");
 			} else {
-				errorMsg = e.shortMessage || e.message || t("mintError");
+				errorMsg = e.shortMessage || e.message || $t("mintError");
 			}
 		}
 	}
@@ -61,11 +61,11 @@
 	disabled={!hash || status === 'loading' || status === 'success'}
 >
 	{#if status === 'loading'}
-		{t("minting")}
+		{$t("minting")}
 	{:else if status === 'success'}
-		{t("minted")}
+		{$t("minted")}
 	{:else}
-		{t("mint")}
+		{$t("mint")}
 	{/if}
 </button>
 
@@ -73,7 +73,7 @@
 
 {#if status === 'success' && txHash}
 	<a href="{NETWORK.explorer}/tx/{txHash}" target="_blank" class="tx-link">
-		{t("viewTx")}
+		{$t("viewTx")}
 	</a>
 {/if}
 

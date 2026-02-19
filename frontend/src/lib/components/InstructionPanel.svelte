@@ -1,51 +1,31 @@
 <script>
+  import { t } from '$lib/i18n/t.js';
+
   export let currentStep = 1;
 
-  const stepsData = {
-    1: {
-      title: "Cargar documentos",
-      desc: "Paso 1: Sube o arrastra tus documentos en el recuadro de abajo para poder continuar (PDF, DOC, Imagen).",
-      progress: 25,
-      color: "#38bdf8"
-    },
-    2: {
-      title: "Registrar el Hash",
-      desc: "Paso 2: Se creó el Hash Sha-256. Haz clic en 'Registrar en blockchain' para asegurar la integridad de tu archivo.",
-      progress: 50,
-      color: "#fbbf24"
-    },
-    3: {
-      title: "Validación de documentos",
-      desc: "Paso 3: Realiza la validación para confirmar la autenticidad y ganar puntos de reputación.",
-      progress: 75,
-      color: "#30d158"
-    },
-    4: {
-      title: "Mint Badge NFT",
-      desc: "¡Proceso verificado! Procede a mintear tu Badge NFT oficial en el botón inferior.",
-      progress: 100,
-      color: "#a855f7"
-    }
-  };
+  const colors    = { 1: "#38bdf8", 2: "#fbbf24", 3: "#30d158", 4: "#a855f7" };
+  const progress  = { 1: 25,        2: 50,        3: 75,        4: 100 };
+  const titleKeys = { 1: 'step1_title', 2: 'step2_title', 3: 'step3_title', 4: 'step4_title' };
+  const descKeys  = { 1: 'step1_desc',  2: 'step2_desc',  3: 'step3_desc',  4: 'step4_desc'  };
 </script>
 
 <div class="jury-panel-card">
   <div class="card-header">
     <div class="header-content">
-      <span class="step-badge" style="background: {stepsData[currentStep].color}22; color: {stepsData[currentStep].color}">
-        Paso {currentStep} de 4
+      <span class="step-badge" style="background: {colors[currentStep]}22; color: {colors[currentStep]}">
+        {$t('step_badge')} {currentStep} {$t('step_of')} 4
       </span>
-      <h3>{stepsData[currentStep].title}</h3>
-      <p>{stepsData[currentStep].desc}</p>
+      <h3>{$t(titleKeys[currentStep])}</h3>
+      <p>{$t(descKeys[currentStep])}</p>
     </div>
     <div class="progress-circle">
-       <span class="percentage" style="color: {stepsData[currentStep].color}">{stepsData[currentStep].progress}%</span>
+      <span class="percentage" style="color: {colors[currentStep]}">{progress[currentStep]}%</span>
     </div>
   </div>
-  
+
   <div class="progress-container">
     <div class="progress-track">
-      <div class="progress-fill" style="width: {stepsData[currentStep].progress}%; background: {stepsData[currentStep].color}"></div>
+      <div class="progress-fill" style="width: {progress[currentStep]}%; background: {colors[currentStep]}"></div>
     </div>
   </div>
 </div>
@@ -54,7 +34,7 @@
   .jury-panel-card {
     background: #1e293b;
     border: 1px solid #334155;
-    border-radius: 16px; /* Bordes más redondeados estilo Apple */
+    border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -114,7 +94,7 @@
 
   .progress-fill {
     height: 100%;
-    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efecto rebote suave */
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
   }
 </style>
