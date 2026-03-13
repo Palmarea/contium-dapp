@@ -31,7 +31,23 @@ export const translations = {
 		validateError: "Error al validar",
 
 		onlyOwnerMint: "Solo el owner puede mintear badges",
+		notDocumentOwner: "No eres el propietario de este documento",
+		mintOnlyForSelf: "Solo puedes mintear el badge para tu propia wallet",
 		mintError: "Error al mintear",
+
+		// JourneySection
+		journey_title: "¿CÓMO FUNCIONA?",
+		journey_subtitle: "Tu documento verificado en 5 pasos",
+		journey_step1_title: "UPLOAD",
+		journey_step1_text: "Sube tu documento (PDF, DOC, imagen)",
+		journey_step2_title: "HASH",
+		journey_step2_text: "Generamos huella digital SHA-256",
+		journey_step3_title: "REGISTRO",
+		journey_step3_text: "Guardamos hash en blockchain zkSYS",
+		journey_step4_title: "VALIDACIÓN",
+		journey_step4_text: "Verificamos y certificamos",
+		journey_step5_title: "BADGE NFT",
+		journey_step5_text: "Recibe tu NFT de cumplimiento",
 
 		// Hero
 		hero_title: "Verifica documentos en blockchain",
@@ -132,7 +148,23 @@ export const translations = {
 		validateError: "Validate error",
 
 		onlyOwnerMint: "Only the owner can mint badges",
+		notDocumentOwner: "You are not the owner of this document",
+		mintOnlyForSelf: "You can only mint the badge for your own wallet",
 		mintError: "Mint error",
+
+		// JourneySection
+		journey_title: "HOW IT WORKS",
+		journey_subtitle: "Your document verified in 5 steps",
+		journey_step1_title: "UPLOAD",
+		journey_step1_text: "Upload your document (PDF, DOC, image)",
+		journey_step2_title: "HASH",
+		journey_step2_text: "We generate your SHA-256 digital fingerprint",
+		journey_step3_title: "REGISTER",
+		journey_step3_text: "We store the hash on zkSYS blockchain",
+		journey_step4_title: "VALIDATION",
+		journey_step4_text: "We verify and certify",
+		journey_step5_title: "BADGE NFT",
+		journey_step5_text: "Receive your compliance NFT",
 
 		// Hero
 		hero_title: "Verify documents on blockchain",

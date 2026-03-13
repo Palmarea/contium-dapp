@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 interface IDocumentRegistry {
     function isValidated(bytes32 hash) external view returns (bool);
+    function getDocumentOwner(bytes32 hash) external view returns (address);
 }
 
 contract ContiumBadge is ERC721, Ownable {
@@ -23,11 +24,16 @@ contract ContiumBadge is ERC721, Ownable {
         documentRegistry = IDocumentRegistry(_documentRegistry);
     }
 
-    function mintBadge(address recipient, bytes32 documentHash) public onlyOwner {
+    function mintBadge(address recipient, bytes32 documentHash) public {
         require(
             documentRegistry.isValidated(documentHash),
             "Document not validated"
         );
+        require(
+            documentRegistry.getDocumentOwner(documentHash) == msg.sender,
+            "No eres el owner del documento"
+        );
+        require(msg.sender == recipient, "Solo puedes mintear para ti mismo");
 
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();

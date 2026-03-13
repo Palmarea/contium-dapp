@@ -73,6 +73,7 @@
       address = accounts[0];
       isConnected = true;
       status = "connected";
+      localStorage.setItem('walletConnected', accounts[0]);
       dispatch('connected', { address });
     } catch (err) {
       status = "disconnected";
@@ -93,6 +94,7 @@
           address = accounts[0];
           isConnected = true;
           status = "connected";
+          localStorage.setItem('walletConnected', accounts[0]);
           dispatch('connected', { address });
         }
       }

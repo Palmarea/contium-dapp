@@ -32,6 +32,11 @@
       const s = await contract.getScore(walletAddress);
       score = Number(s);
       validatedCount = Math.floor(score / 10);
+
+      // Contar documentos registrados por este usuario via eventos
+      const filter = contract.filters.DocumentRegistered(null, walletAddress);
+      const events = await contract.queryFilter(filter);
+      docsCount = events.length;
     } catch (e) {
       console.error('Error cargando stats:', e);
     }

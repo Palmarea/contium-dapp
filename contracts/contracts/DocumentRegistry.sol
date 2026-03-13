@@ -77,6 +77,11 @@ contract DocumentRegistry {
         return documents[_hash];
     }
 
+    /// @notice Retorna el owner de un documento (address(0) si no existe)
+    function getDocumentOwner(bytes32 _hash) external view returns (address) {
+        return documents[_hash].owner;
+    }
+
     /// @notice Verifica si un hash está registrado
     function isRegistered(bytes32 _hash) public view returns (bool) {
         return documents[_hash].owner != address(0);

@@ -19,8 +19,8 @@ export const NETWORK = {
  * Direcciones de contratos desplegados
  */
 export const CONTRACTS = {
-  documentRegistry: '0xd707cc8D9FC170fe100147a8903e3DB33D596322',
-  contiumBadge: '0x912675023673C6BD0045630194caeA746B564959'
+  documentRegistry: '0x77B3CaB5613Ad4Aea82b3959c0051a20A460eEc6',
+  contiumBadge: '0xC19eb5695E11e8bed5c34c812F102923DF8DE96A'
 };
 
 /**
@@ -34,6 +34,7 @@ export const ABIS = {
     {"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"getScore","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
     {"inputs":[{"internalType":"uint256","name":"_limit","type":"uint256"}],"name":"getTopUsers","outputs":[{"internalType":"address[]","name":"topUsers","type":"address[]"},{"internalType":"uint256[]","name":"topScores","type":"uint256[]"}],"stateMutability":"view","type":"function"},
     {"inputs":[],"name":"getTotalUsers","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+    {"inputs":[{"internalType":"bytes32","name":"_hash","type":"bytes32"}],"name":"getDocumentOwner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
     {"inputs":[{"internalType":"bytes32","name":"_hash","type":"bytes32"}],"name":"isRegistered","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
     {"inputs":[{"internalType":"bytes32","name":"_hash","type":"bytes32"}],"name":"isValidated","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
     {"inputs":[{"internalType":"bytes32","name":"_hash","type":"bytes32"},{"internalType":"string","name":"_metadata","type":"string"}],"name":"registerDocument","outputs":[],"stateMutability":"nonpayable","type":"function"},

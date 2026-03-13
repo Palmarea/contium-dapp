@@ -1,12 +1,13 @@
 <script>
   import { onMount } from 'svelte';
+  import { t } from '$lib/i18n/t.js';
 
-  const steps = [
-    { icon: '📤', title: 'UPLOAD', text: 'Sube tu documento (PDF, DOC, imagen)', glow: '#0071e3' },
-    { icon: '🔐', title: 'HASH', text: 'Generamos huella digital SHA-256', glow: '#38bdf8' },
-    { icon: '⛓️', title: 'REGISTRO', text: 'Guardamos hash en blockchain zkSYS', glow: '#a855f7' },
-    { icon: '✅', title: 'VALIDACIÓN', text: 'Verificamos y certificamos', glow: '#30d158' },
-    { icon: '🏆', title: 'BADGE NFT', text: 'Recibe tu NFT de cumplimiento', glow: '#fbbf24' }
+  $: steps = [
+    { icon: '📤', titleKey: 'journey_step1_title', textKey: 'journey_step1_text', glow: '#0071e3' },
+    { icon: '🔐', titleKey: 'journey_step2_title', textKey: 'journey_step2_text', glow: '#38bdf8' },
+    { icon: '⛓️', titleKey: 'journey_step3_title', textKey: 'journey_step3_text', glow: '#a855f7' },
+    { icon: '✅', titleKey: 'journey_step4_title', textKey: 'journey_step4_text', glow: '#30d158' },
+    { icon: '🏆', titleKey: 'journey_step5_title', textKey: 'journey_step5_text', glow: '#fbbf24' }
   ];
 
   let visible = false;
@@ -17,8 +18,8 @@
 
 <section class="journey">
   <div class="container">
-    <h2>¿CÓMO FUNCIONA?</h2>
-    <p class="subtitle">Tu documento verificado en 5 pasos</p>
+    <h2>{$t('journey_title')}</h2>
+    <p class="subtitle">{$t('journey_subtitle')}</p>
 
     <div class="timeline">
       {#each steps as step, i}
@@ -33,8 +34,8 @@
           <div class="card">
             <div class="card-bg"></div>
             <span class="icon">{step.icon}</span>
-            <h3>{step.title}</h3>
-            <p>{step.text}</p>
+            <h3>{$t(step.titleKey)}</h3>
+            <p>{$t(step.textKey)}</p>
           </div>
         </div>
       {/each}
@@ -44,7 +45,7 @@
 
 <style>
   .journey {
-    background: #050505; /* Un tono casi negro pero con profundidad */
+    background: #050505;
     padding: 100px 20px;
     color: #fff;
   }
@@ -64,6 +65,7 @@
     margin-bottom: 10px;
     background: linear-gradient(180deg, #fff 0%, #86868b 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
@@ -118,7 +120,7 @@
   }
 
   .card {
-    background: #121212; /* Gris Space Gray para contraste con el fondo */
+    background: #121212;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     padding: 35px;
@@ -131,7 +133,6 @@
     cursor: pointer;
   }
 
-  /* El brillo que aparece detrás al pasar el mouse */
   .card-bg {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -148,18 +149,10 @@
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(var(--step-glow), 0.2);
   }
 
-  .card:hover .card-bg {
-    opacity: 0.15;
-  }
+  .card:hover .card-bg { opacity: 0.15; }
+  .card:hover h3 { text-shadow: 0 0 10px var(--step-glow); }
 
-  .card:hover h3 {
-    text-shadow: 0 0 10px var(--step-glow);
-  }
-
-  .icon, h3, p {
-    position: relative;
-    z-index: 1;
-  }
+  .icon, h3, p { position: relative; z-index: 1; }
 
   .icon {
     font-size: 2.2rem;
@@ -171,7 +164,7 @@
   h3 {
     font-size: 0.9rem;
     letter-spacing: 0.25em;
-    color: var(--step-glow); /* Título del color del paso */
+    color: var(--step-glow);
     margin-bottom: 0.8rem;
     font-weight: 800;
   }

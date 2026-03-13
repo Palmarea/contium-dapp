@@ -46,6 +46,10 @@
 			status = 'idle';
 			if (e.code === 4001) {
 				errorMsg = $t("txCancelled");
+			} else if (e.message?.includes('No eres el owner')) {
+				errorMsg = $t("notDocumentOwner");
+			} else if (e.message?.includes('Solo puedes mintear')) {
+				errorMsg = $t("mintOnlyForSelf");
 			} else if (e.message?.includes('onlyOwner')) {
 				errorMsg = $t("onlyOwnerMint");
 			} else {
