@@ -62,10 +62,10 @@ export const translations = {
 		feat_title: "Características",
 		feat_blockchain_title: "Blockchain",
 		feat_blockchain_desc: "Registro inmutable de documentos.",
-		feat_zerotrust_title: "Zero Trust",
-		feat_zerotrust_desc: "Validaciones sin confianza previa.",
-		feat_ai_title: "IA Preventiva",
-		feat_ai_desc: "Alertas ante fraudes.",
+		feat_zerotrust_title: "Sin Servidor",
+		feat_zerotrust_desc: "El hash se genera localmente, tu archivo nunca sale del navegador.",
+		feat_ai_title: "NFT Certificado",
+		feat_ai_desc: "Recibe un badge ERC-721 como prueba de participación.",
 
 		// Dashboard
 		dash_title: "Verificación Documental",
@@ -179,10 +179,10 @@ export const translations = {
 		feat_title: "Features",
 		feat_blockchain_title: "Blockchain",
 		feat_blockchain_desc: "Immutable document registry.",
-		feat_zerotrust_title: "Zero Trust",
-		feat_zerotrust_desc: "Trustless validations.",
-		feat_ai_title: "Preventive AI",
-		feat_ai_desc: "Fraud alerts.",
+		feat_zerotrust_title: "No Server",
+		feat_zerotrust_desc: "Hash is generated locally, your file never leaves the browser.",
+		feat_ai_title: "NFT Certificate",
+		feat_ai_desc: "Receive an ERC-721 badge as proof of participation.",
 
 		// Dashboard
 		dash_title: "Document Verification",
