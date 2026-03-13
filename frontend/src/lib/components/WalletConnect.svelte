@@ -14,6 +14,8 @@
     blockExplorerUrls: [NETWORK.explorer]
   };
 
+  const ACCEPTED_CHAIN_IDS = ['0xdef2', '0xded2'];
+
   export let address = "";
   export let isConnected = false;
   let status = "disconnected";
@@ -30,13 +32,6 @@
     if (window.ethereum?.wallet === 'pali-v2') return 'Pali Wallet';
     if (window.ethereum) return 'Wallet';
     return '';
-  }
-
-  async function checkNetwork() {
-    const provider = getProvider();
-    if (!provider) return false;
-    const chainId = await provider.request({ method: 'eth_chainId' });
-    return chainId === ZKSYS_CONFIG.chainId;
   }
 
   async function switchOrAddNetwork() {
@@ -64,7 +59,7 @@
       const accounts = await provider.request({ method: 'eth_requestAccounts' });
 
       const chainId = await provider.request({ method: 'eth_chainId' });
-      if (chainId.toLowerCase() !== ZKSYS_CONFIG.chainId.toLowerCase()) {
+      if (!ACCEPTED_CHAIN_IDS.includes(chainId.toLowerCase())) {
         showNetworkModal = true;
         status = "wrong_network";
         return;
@@ -88,7 +83,7 @@
 
       const provider = getProvider();
       const chainId = await provider.request({ method: 'eth_chainId' });
-      if (chainId.toLowerCase() === ZKSYS_CONFIG.chainId.toLowerCase()) {
+      if (ACCEPTED_CHAIN_IDS.includes(chainId.toLowerCase())) {
         const accounts = await provider.request({ method: 'eth_accounts' });
         if (accounts.length > 0) {
           address = accounts[0];
@@ -199,7 +194,6 @@
   }
   .btn-disconnect:hover { color: #d93025; }
 
-  /* Modal */
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,0.6);
     display: flex; align-items: center; justify-content: center; z-index: 1000;
