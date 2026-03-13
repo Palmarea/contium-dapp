@@ -33,7 +33,7 @@
 			const contract = new ethers.Contract(CONTRACTS.contiumBadge, ABI, signer);
 
 			const tx = await contract.mintBadge(recipient, normalizeHash(hash));
-			txHash = tx.hash;          // ✅ clave para barra
+			txHash = tx.hash;
 			await tx.wait();
 
 			status = 'success';

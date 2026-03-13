@@ -19,8 +19,8 @@ export const NETWORK = {
  * Direcciones de contratos desplegados
  */
 export const CONTRACTS = {
-  documentRegistry: '0x77B3CaB5613Ad4Aea82b3959c0051a20A460eEc6',
-  contiumBadge: '0xC19eb5695E11e8bed5c34c812F102923DF8DE96A'
+  documentRegistry: '0x83079B61BAf6cf197924c4da609D6D19C35cC479',
+  contiumBadge: '0xae8274b3dF602D6ec5FE9AFf10d6D2FC4992477e'
 };
 
 /**

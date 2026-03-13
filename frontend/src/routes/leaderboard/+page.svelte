@@ -37,15 +37,12 @@
   }
 
   onMount(async () => {
-    if (browser) {
-      const saved = localStorage.getItem('walletConnected');
-      if (saved && window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-        if (accounts[0]) userAddress = accounts[0].toLowerCase();
-      }
+  if (browser) {
+    const saved = localStorage.getItem('walletConnected');
+    if (saved) userAddress = saved.toLowerCase();
 
-      await loadLeaderboard();
-      refreshInterval = setInterval(loadLeaderboard, 30000);
+    await loadLeaderboard();
+    refreshInterval = setInterval(loadLeaderboard, 30000);
     }
   });
 

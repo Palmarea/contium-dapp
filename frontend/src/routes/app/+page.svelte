@@ -44,7 +44,8 @@
 
   function nextStep() {
     if (currentStep < 4) currentStep++;
-    setTimeout(loadStats, 3000);
+    docsCount++;
+    setTimeout(loadStats, 4000);
   }
 
   $: if (walletAddress) loadStats();
