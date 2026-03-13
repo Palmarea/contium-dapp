@@ -1,87 +1,34 @@
-# 🛡️ CONTIUM
+# 🛡️ Contium — Contracts
 
-**Verificación y certificación de documentos en blockchain**
+Smart contracts for document verification and NFT certification on zkSYS blockchain.
 
-Contium es una dApp para empresas de comercio exterior que necesitan comprobar la autenticidad de documentos como facturas, contratos y certificados.
+## Deployed Contracts
 
-## 🎯 ¿Qué problema resuelve?
-
-En comercio internacional, los documentos falsos o alterados causan pérdidas millonarias. Contium permite:
-
-- **Registrar** documentos en blockchain (inmutable)
-- **Validar** que un documento es auténtico
-- **Certificar** con un NFT Badge como prueba de cumplimiento
-
-## 🚀 ¿Cómo funciona?
-
-1. 📤 **Sube tu documento** → Se genera un hash SHA-256
-2. ⛓️ **Registra el hash** → Se guarda en blockchain zkSYS
-3. ✅ **Valida** → El sistema verifica y te da puntos
-4. 🏆 **Mintea un Badge NFT** → Certificado digital
-
-## 🛠️ Tecnología
-
-| Componente | Tecnología |
-|------------|------------|
-| Blockchain | zkSYS PoB DevNet (Syscoin L2) |
-| Smart Contracts | Solidity |
-| Frontend | SvelteKit |
-| Wallet | MetaMask |
-
-## 📜 Smart Contracts Deployados
-
-| Contrato | Función | Address |
+| Contract | Address | Purpose |
 |----------|---------|---------|
-| DocumentRegistry | Registra y valida documentos | `0xd707cc8D9FC170fe100147a8903e3DB33D596322` |
-| ContiumBadge | NFT de certificación | `0x912675023673C6BD0045630194caeA746B564959` |
+| DocumentRegistry | `0xf0f456e3873d76832BFA8646660bfF28edB7D3bD` | Document registration, validation, scoring |
+| ContiumBadge | `0x50081354245135c20088D05737aD3a3AFc737972` | ERC-721 NFT badge with on-chain metadata |
 
-**Network:** zkSYS PoB DevNet  
-**Chain ID:** 57042  
-**RPC:** https://rpc-pob.dev11.top  
+**Network:** zkSYS PoB DevNet
+**Chain ID:** 57042
+**RPC:** https://rpc-pob.dev11.top
 **Explorer:** https://explorer-pob.dev11.top
+**Wallet:** Pali Wallet (https://paliwallet.com)
 
-## 📁 Estructura del Proyecto
-```
-contium-dapp/
-├── contracts/          # Smart contracts Solidity
-│   ├── contracts/      # DocumentRegistry.sol, ContiumBadge.sol
-│   ├── scripts/        # Deploy scripts
-│   ├── test/           # Tests unitarios
-│   └── hardhat.config.ts
-├── frontend/           # Aplicación SvelteKit
-│   └── src/
-│       ├── routes/     # Páginas (app, leaderboard)
-│       └── lib/        # Componentes y config
-└── docs/               # Documentación
-```
-
-## 🏃 Ejecutar Localmente
-
-### Frontend
+## Setup
 ```bash
-cd frontend
 npm install
-npm run dev
+cp .env.example .env  # add PRIVATE_KEY and ZKSYS_RPC_URL
 ```
-Abre http://localhost:5173
 
-### Contracts (tests)
+## Commands
 ```bash
-cd contracts
-npm install
-npx hardhat test
+npx hardhat test                                    # run tests
+npx hardhat run scripts/deploy.js --network zksys  # deploy
 ```
 
-## 🔗 Links
+## Stack
 
-- [Explorer](https://explorer-pob.dev11.top)
-- [DocumentRegistry](https://explorer-pob.dev11.top/address/0xd707cc8D9FC170fe100147a8903e3DB33D596322)
-- [ContiumBadge](https://explorer-pob.dev11.top/address/0x912675023673C6BD0045630194caeA746B564959)
-
-## 👥 Equipo
-
-**ChainPort** - Desarrollado para el **zkSYS Hackathon 2025**
-
----
-
-© 2025 Contium by ChainPort - RegTech on Syscoin
+- Solidity ^0.8.28
+- Hardhat 3
+- OpenZeppelin (ERC721, Base64, Strings)
