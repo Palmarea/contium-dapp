@@ -4,7 +4,7 @@
  */
 export const NETWORK = {
   chainId: 57042,
-  chainIdHex: '0xDED2',
+  chainIdHex: '0xDEF2', 
   name: 'zkSYS PoB DevNet',
   rpcUrl: 'https://rpc-pob.dev11.top',
   explorer: 'https://explorer-pob.dev11.top',
