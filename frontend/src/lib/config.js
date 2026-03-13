@@ -1,5 +1,5 @@
 /**
- * Configuración de red para la dApp
+ * red confg for deploy
  * zkSYS PoB DevNet
  */
 export const NETWORK = {
@@ -16,15 +16,15 @@ export const NETWORK = {
 };
 
 /**
- * Direcciones de contratos desplegados
+ * contracts adress to deploy
  */
 export const CONTRACTS = {
-  documentRegistry: '0x83079B61BAf6cf197924c4da609D6D19C35cC479',
-  contiumBadge: '0xae8274b3dF602D6ec5FE9AFf10d6D2FC4992477e'
+  documentRegistry: '0xf0f456e3873d76832BFA8646660bfF28edB7D3bD',
+  contiumBadge: '0x50081354245135c20088D05737aD3a3AFc737972'
 };
 
 /**
- * ABIs de contratos inteligentes
+ * ABIs Smart's contract
  */
 export const ABIS = {
   documentRegistry: [
